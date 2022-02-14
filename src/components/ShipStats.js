@@ -1,12 +1,12 @@
 import React from "react";
 import Ship from "./Ship";
 
-const ShipStats = ({ ships, handleDelete }) => {
+const ShipStats = ({ ships }) => {
   return (
     <div>
-      ShipStats
+      <h2>ShipStats</h2>
       {ships.map((ship) => (
-        <Ship key={ship.id} ship={ship} handleDelete={handleDelete} />
+        <Ship key={ship.id} {...ship} />
       ))}
     </div>
   );

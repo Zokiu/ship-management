@@ -1,36 +1,31 @@
-import React, { useState } from "react";
-import Button from "../shared/Button";
+import React, { useState, useReducer, useContext, useRef } from "react";
+import { ShipsContext } from "../App";
 
-const AddShip = ({ handleAdd }) => {
+const AddShip = () => {
+  const { dispatch } = React.useContext(ShipsContext);
+  //state for input
   const [shipname, setShipname] = useState("");
   const [verticalSail, setVerticalSail] = useState(0);
   const [horizontalSail, setHorizontalSail] = useState(0);
-
-  const shipnameChange = (event) => {
-    setShipname(event.target.value);
-  };
-  const updateVerticalSail = (event) => {
-    setVerticalSail(event.target.value);
-  };
-  const updateHorizontalSail = (event) => {
-    setHorizontalSail(event.target.value);
-  };
+  const inputShipName = useRef();
+  const inputVerticalSail = useRef();
+  const inputHorizontalSail = useRef();
+  ///start
+  //   const { name, value } = event.target;
 
   const handleSumbit = (event) => {
     event.preventDefault();
-    if (shipname.trim().length > 1) {
-      console.log("handle submit");
-      const newShip = {
-        id: Date.now(),
-        name: shipname,
-        verticalSail: verticalSail,
-        horizontalSail: horizontalSail,
-      };
-      handleAdd(newShip);
-      setShipname("");
-      setVerticalSail(0);
-      setHorizontalSail(0);
-    }
+    let newShip = {
+      id: Date.now(),
+      name: shipname,
+      verticalSail: verticalSail,
+      horizontalSail: horizontalSail,
+    };
+    dispatch({ type: "ADD_SHIP", payload: { newShip } });
+
+    inputShipName.current.value = "";
+    inputVerticalSail.current.value = "";
+    inputHorizontalSail.current.value = "";
   };
 
   return (
@@ -39,27 +34,30 @@ const AddShip = ({ handleAdd }) => {
       <form onSubmit={handleSumbit}>
         <p>Ship name:</p>
         <input
-          value={shipname}
-          onChange={shipnameChange}
+          onChange={(event) => setShipname(event.target.value)}
           type="text"
           placeholder="Ship name"
+          ref={inputShipName}
         />
         <p>Vertical Sail:</p>
         <input
-          value={verticalSail}
-          onChange={updateVerticalSail}
+          onChange={(event) => setVerticalSail(event.target.value)}
           type="number"
           placeholder="666"
+          ref={inputVerticalSail}
         />
         <p>Horizontal Sail:</p>
         <input
-          value={horizontalSail}
-          onChange={updateHorizontalSail}
+          onChange={(event) => setHorizontalSail(event.target.value)}
           type="number"
+          s
           placeholder="365"
+          ref={inputHorizontalSail}
         />
-        <Button></Button>
-        <button type="submit">Submit</button>
+        <div>
+          <br />
+          <button type="submit">Submit</button>
+        </div>
       </form>
     </div>
   );
